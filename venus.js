@@ -2,6 +2,7 @@ let cur = 0;
 const container = document.querySelector("#venus-container");
 const divs = container.querySelectorAll("div");
 let s = genStyle();
+init();
 
 function init() {
   tick();
@@ -19,13 +20,13 @@ function tick() {
   for (let i = 0; i < divs.length; i++) {
     const div = divs[i];
     if (i === cur) {
-      div.style.transform = transform(0, s.v1OffsetY, 1);
+      div.style.transform = transform(s.v1);
     } else if (i === prev) {
-      div.style.transform = transform(s.v2OffsetX, 0, 0.3);
+      div.style.transform = transform(s.v2);
     } else if (i === next) {
-      div.style.transform = transform(s.v3OffsetX, 0, 0.3);
+      div.style.transform = transform(s.v3);
     } else {
-      div.style.transform = transform(0, s.v4OffsetY, 0);
+      div.style.transform = transform(s.v4);
     }
   }
 }
@@ -51,24 +52,35 @@ function preventOverflow(val, min = 0, max = divs.length - 1) {
 }
 
 function genStyle() {
-  const { parentWidth, parentHeight } = getParentSize();
-  const s = {};
-  s.v1OffsetY = Math.floor(parentHeight / 2);
-  s.v2OffsetX = Math.floor(parentWidth / 2) * -1;
-  s.v3OffsetX = Math.floor(parentWidth / 2);
-  s.v4OffsetY = Math.floor(parentHeight / 2) * -1;
+  const parentWidth = container.clientWidth;
+  const parentHeight = container.clientHeight;
+  const s = {
+    v1: {
+      offsetX: 0,
+      offsetY: Math.floor(parentHeight / 2),
+      scale: 1,
+    },
+    v2: {
+      offsetX: Math.floor(parentWidth / 2) * -1,
+      offsetY: 0,
+      scale: 0.3,
+    },
+    v3: {
+      offsetX: Math.floor(parentWidth / 2),
+      offsetY: 0,
+      scale: 0.3,
+    },
+    v4: {
+      offsetX: 0,
+      offsetY: Math.floor(parentHeight / 2) * -1,
+      scale: 0,
+    },
+  };
   return s;
 }
 
-function getParentSize() {
-  return {
-    parentWidth: container.clientWidth,
-    parentHeight: container.clientHeight,
-  };
-}
-
-function transform(x, y, scale = 1) {
-  return `translateX(${x}px) translateY(${y}px) scale(${scale})`;
+function transform({ offsetX, offsetY, scale }) {
+  return `translateX(${offsetX}px) translateY(${offsetY}px) scale(${scale})`;
 }
 
 function prev() {
@@ -80,7 +92,3 @@ function next() {
   moveCur(1);
   tick();
 }
-
-init();
-// document.querySelector("#prev").addEventListener("click", prev);
-// document.querySelector("#next").addEventListener("click", next);
