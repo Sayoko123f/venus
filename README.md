@@ -12,7 +12,7 @@
 
 預先加入 `.invisible` 是怕圖片未完全加載就顯示會影響使用者體驗，在 JS 初始化後移除。
 
-如果修改容器 `id=venus-container` ，記得 JS 那邊也要修改。
+如果修改容器 `id="venus-container"` ，記得 JS 那邊也要修改。
 
 ## CSS
 
