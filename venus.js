@@ -1,6 +1,6 @@
 let cur = 0;
 const container = document.querySelector("#venus-container");
-const divs = container.querySelectorAll("div");
+const divs = container.querySelectorAll("div.venus-base");
 let s = genStyle();
 init();
 
@@ -10,8 +10,11 @@ function init() {
     for (let i = 0; i < divs.length; i++) {
       divs[i].classList.remove("invisible");
     }
-    window.setInterval(next, 1200);
+    // window.setInterval(next, 1200);
   }, 500);
+
+  document.querySelector("#venus-button-prev").addEventListener("click", prev);
+  document.querySelector("#venus-button-next").addEventListener("click", next);
 }
 
 function tick() {
@@ -76,6 +79,11 @@ function genStyle() {
       scale: 0,
     },
   };
+
+  if (parentWidth < 768) {
+    s.v2.scale = s.v3.scale = 0;
+  }
+
   return s;
 }
 
